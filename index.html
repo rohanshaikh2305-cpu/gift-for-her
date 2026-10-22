@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Just For You 💗</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;min-height:100%;overflow-x:hidden;overflow-y:auto;overscroll-behavior:none}
+html{scroll-behavior:smooth;}
+html.scroll-locked{overflow:hidden;}
+body{min-height:100vh;font-family:Georgia,"Times New Roman",serif;background:#120713;color:#fff;overflow-x:hidden;}
+button{font:inherit;}
+.screen{min-height:100svh;display:flex;align-items:center;justify-content:center;position:relative;padding:28px 18px;}
+#opening{background:radial-gradient(circle at 50% 30%,rgba(255,113,177,.20),transparent 34%),radial-gradient(circle at 20% 80%,rgba(166,94,255,.14),transparent 30%),linear-gradient(145deg,#100610,#241026 55%,#100610);overflow:hidden;}
+.stars,.hearts{position:absolute;inset:0;pointer-events:none;}
+.stars:before,.stars:after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.85) 1px,transparent 1.5px),radial-gradient(circle,rgba(255,170,215,.6) 1px,transparent 1.5px);background-size:72px 72px,115px 115px;background-position:10px 5px,40px 50px;opacity:.45;animation:drift 16s linear infinite;}
+@keyframes drift{to{transform:translateY(72px);}}
+.open-card{text-align:center;position:relative;z-index:2;animation:float 4s ease-in-out infinite;}
+@keyframes float{50%{transform:translateY(-7px);}}
+.open-card .tiny{font-size:.78rem;letter-spacing:4px;text-transform:uppercase;opacity:.55;margin-bottom:20px;}
+.open-btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.09);color:#fff;padding:17px 31px;border-radius:999px;cursor:pointer;letter-spacing:1px;box-shadow:0 0 30px rgba(255,100,180,.18),inset 0 0 20px rgba(255,255,255,.04);backdrop-filter:blur(8px);transition:.25s;}
+.open-btn:active{transform:scale(.95);}
+.open-btn:hover{box-shadow:0 0 40px rgba(255,100,180,.35);}
+#main{display:none;background:linear-gradient(180deg,#160817,#2b1026 45%,#100611);}
+.section{width:100%;max-width:620px;margin:auto;text-align:center;position:relative;z-index:2;}
+.kicker{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;opacity:.58;margin-bottom:12px;}
+h1{font-size:clamp(2rem,9vw,3.6rem);line-height:1.05;margin:0 0 14px;}
+h2{font-size:clamp(1.7rem,7vw,2.5rem);margin:0 0 12px;}
+p{font-family:system-ui,sans-serif;line-height:1.7;opacity:.82;}
+.question-card{padding:28px 20px;border:1px solid rgba(255,190,225,.22);border-radius:28px;background:rgba(255,255,255,.06);box-shadow:0 20px 60px rgba(0,0,0,.28);backdrop-filter:blur(12px);}
+.question-actions{display:flex;gap:12px;justify-content:center;margin-top:25px;}
+.yes-btn,.no-btn{border:0;border-radius:999px;padding:14px 24px;cursor:pointer;transition:.18s;touch-action:manipulation;}
+.yes-btn{background:#ff6fae;color:#260718;box-shadow:0 8px 30px rgba(255,80,160,.28);}
+.no-btn{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.18);position:relative;}
+#celebrate{display:none;width:100%;min-height:100svh;min-height:100dvh;padding:clamp(16px,4vh,40px) 14px;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+#celebrate .section{width:100%;max-width:520px;margin:auto;}
+#celebrate .world-title{font-size:clamp(1.8rem,8vw,2.5rem);line-height:1.15;margin:8px auto;max-width:100%;}
+#celebrate .love-heart-pulse{width:clamp(54px,16vw,72px);height:clamp(54px,16vw,72px);font-size:clamp(42px,13vw,58px);margin:8px auto;}
+#celebrate .love-open-btn{width:min(220px,82vw);height:clamp(56px,16vw,70px);margin:14px auto;font-size:clamp(14px,4vw,17px);}
+#celebrate .love-letter-card{width:min(92%,430px);margin:16px auto;padding:clamp(18px,5vw,26px) clamp(14px,5vw,22px);}
+#celebrate .love-letter-card h3{font-size:clamp(20px,6vw,25px);line-height:1.2;}
+#celebrate .love-letter-card p{font-size:clamp(14px,4vw,16px);line-height:1.6;}
+.heart-burst{font-size:4rem;animation:pulse 1.2s infinite;}
+@keyframes pulse{50%{transform:scale(1.15);}}
+.content-section{padding:72px 18px;}
+.photo-card{margin:24px auto 0;max-width:430px;border-radius:28px;padding:8px;background:linear-gradient(135deg,rgba(255,190,225,.45),rgba(255,255,255,.06));box-shadow:0 24px 70px rgba(0,0,0,.35),0 0 45px rgba(255,80,160,.10);}
+.photo-card img{display:block;width:100%;height:auto;border-radius:22px;}
+.special-card{position:relative;}
+.special-card:after{content:"⭐ Special";position:absolute;top:18px;right:18px;padding:7px 11px;border-radius:999px;background:rgba(30,8,25,.72);border:1px solid rgba(255,220,240,.28);font:600 .75rem system-ui,sans-serif;backdrop-filter:blur(8px);}
+.gallery-wrap{overflow:hidden;max-width:100%;touch-action:pan-y;}
+.gallery{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 2px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.gallery::-webkit-scrollbar{display:none;}
+.gallery .photo-card{min-width:84vw;max-width:390px;scroll-snap-align:center;margin:0;}
+.dots{display:flex;justify-content:center;gap:7px;margin-top:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);}
+.dot.active{background:#ff8dc0;box-shadow:0 0 10px #ff8dc0;}
+.final{display:none;min-height:90svh;align-items:center;justify-content:center;padding:50px 18px;background:radial-gradient(circle at 50% 35%,rgba(255,80,160,.18),transparent 34%),linear-gradient(180deg,#160817,#080308);}
+.final.final-active{display:flex;position:fixed;inset:0;z-index:9999;min-height:100vh;min-height:100dvh;overflow-y:auto;}
+.final .click-here-btn{visibility:visible;margin-top:22px;}
+.final .sign{margin-top:18px;font-size:1.1rem;font-style:italic;opacity:1;}
+.final-heart{font-size:3.5rem;animation:pulse 1.6s infinite;}
+.final p{max-width:460px;margin:12px auto;}
+.music-pill{position:fixed;right:14px;bottom:22px;z-index:20;padding:9px 12px;border-radius:999px;background:rgba(20,5,18,.72);border:1px solid rgba(255,255,255,.18);font:600 .72rem system-ui,sans-serif;backdrop-filter:blur(10px);opacity:0;transition:.3s;}
+.music-pill.show{opacity:.8;}
+.floating-heart{position:fixed;bottom:-30px;left:50%;font-size:18px;pointer-events:none;z-index:15;animation:rise 4s ease-out forwards;}
+@keyframes rise{0%{transform:translateX(0) scale(.7);opacity:0;}15%{opacity:1;}100%{transform:translate(var(--x),-110svh) rotate(25deg) scale(1.35);opacity:0;}}
+.fade{animation:fadeUp .9s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
+@media(max-width:420px){.content-section{padding:58px 14px;}.question-card{padding:24px 16px;}.question-actions{gap:8px;}.yes-btn,.no-btn{padding:13px 19px;}}
+.world-title{font-size:34px;text-align:center;line-height:1.2;margin:18px 0 8px;color:#fff;text-shadow:0 0 18px rgba(255,70,150,.55);}
+.love-heart-pulse{width:72px;height:72px;margin:12px auto;display:flex;align-items:center;justify-content:center;font-size:58px;animation:loveBeat 1.2s ease-in-out infinite;filter:drop-shadow(0 0 14px rgba(255,40,130,.7));}
+.love-heart-pulse::before{content:"💗";}
+@keyframes loveBeat{0%,100%{transform:scale(1);}50%{transform:scale(1.18);}}
+.love-open-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;margin:24px auto;width:220px;height:70px;border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,#ff4f9a,#ff176f);border-radius:22px;font-size:17px;font-weight:700;letter-spacing:.5px;box-shadow:0 10px 30px rgba(255,35,120,.35),0 0 25px rgba(255,80,160,.25);transition:.3s ease;}
+.love-open-btn::before{content:"♥";position:absolute;font-size:92px;color:rgba(255,70,150,.18);transform:rotate(-45deg);z-index:0;}
+.love-open-btn span{position:relative;z-index:2;}
+.love-open-btn:hover{transform:scale(1.06);box-shadow:0 14px 35px rgba(255,35,120,.5),0 0 35px rgba(255,80,160,.4);}
+.love-open-btn:active{transform:scale(.94);}
+.love-letter-card{visibility:hidden;width:min(92%,430px);margin:24px auto;padding:26px 22px;border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,70,150,.08));border:1px solid rgba(255,150,200,.3);box-shadow:0 15px 45px rgba(0,0,0,.35),0 0 30px rgba(255,50,140,.18);backdrop-filter:blur(12px);text-align:center;}
+.love-letter-card h3{margin:0 0 18px;font-size:25px;color:#fff;text-shadow:0 0 14px rgba(255,80,160,.55);}
+.love-letter-card p{margin:0;font-size:16px;line-height:1.75;color:rgba(255,255,255,.9);}
+.love-letter-card.open{visibility:visible;animation:letterOpen .8s ease forwards;}
+@keyframes letterOpen{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.wanted-text{margin:25px auto 16px;max-width:400px;text-align:center;font-size:17px;line-height:1.6;color:#fff;text-shadow:0 0 10px rgba(255,70,150,.35);}
+.click-here-btn{display:block;margin:0 auto 10px;padding:14px 32px;border:none;border-radius:30px;cursor:pointer;color:#fff;background:linear-gradient(135deg,#ff5fa8,#ff277c);font-size:17px;font-weight:700;box-shadow:0 8px 25px rgba(255,35,120,.35);transition:.3s ease;}
+.click-here-btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 30px rgba(255,35,120,.5);}
+.click-here-btn:active{transform:scale(.94);}
+@media(max-width:420px){.world-title{font-size:30px;}.love-heart-pulse{font-size:52px;}.love-open-btn{width:205px;height:64px;font-size:16px;}.love-letter-card{width:92%;padding:24px 18px;}.love-letter-card h3{font-size:23px;}.love-letter-card p{font-size:15px;line-height:1.7;}.wanted-text{font-size:16px;}}
+.wanted-text,.click-here-btn{visibility:hidden;}
+#photoGalleryPage .click-here-btn{visibility:visible;}
+#photoGalleryPage{display:none;position:fixed;inset:0;z-index:9999;width:100%;height:100vh;height:100dvh;overflow:hidden;background:#120713;}
+#photoGalleryPage.photo-page-active{display:block;}
+#photoGalleryPage .content-section{display:none;width:100%;height:100%;padding:58px 18px 24px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;}
+#photoGalleryPage .content-section.photo-section-active{display:block;}
+#photoGalleryPage .content-section .section{width:100%;max-width:620px;margin:0 auto;}
+#photoGalleryPage .photo-next-btn{margin:24px auto 10px;}
+.page-transition{position:fixed;inset:0;z-index:10001;background:#120713;opacity:0;pointer-events:none;transition:opacity 0.8s ease;}
+.page-transition.show{opacity:1;}
+/* --- no blue tap box --- */
+*{-webkit-tap-highlight-color:transparent;}
+button{outline:none;}
+button:focus-visible{outline:2px solid rgba(255,255,255,.5);outline-offset:3px;}
+/* --- compact celebrate screen: everything (incl. CLICK HERE) fits one phone screen --- */
+#celebrate{padding:clamp(8px,2vh,18px) 14px;}
+#celebrate .heart-burst{font-size:clamp(2rem,6vh,2.8rem);line-height:1.1;}
+#celebrate .world-title{font-size:clamp(1.45rem,6.4vw,2rem);margin:4px auto;}
+#celebrate .love-heart-pulse{width:auto;height:clamp(40px,7vh,54px);font-size:clamp(32px,6vh,42px);margin:2px auto;}
+#celebrate .love-open-btn{height:clamp(46px,7.5vh,56px);margin:8px auto;}
+#celebrate .love-letter-card{margin:8px auto;padding:12px 14px;}
+#celebrate .love-letter-card h3{font-size:clamp(18px,5vw,21px);margin:0 0 8px;}
+#celebrate .love-letter-card p{font-size:clamp(12.5px,3.6vw,14px);line-height:1.45;}
+#celebrate .wanted-text{margin:8px auto;font-size:clamp(14px,4vw,16px);line-height:1.4;}
+#celebrate .click-here-btn{padding:11px 28px;margin-bottom:0;}
+</style>
+</head>
+<body>
+
+  <div class="page-transition" id="pageTransition"></div>
+
+<section id="opening" class="screen">
+
+    <div class="stars"></div>
+
+    <div class="open-card">
+
+        <div class="tiny">
+            A little secret, just for Sumona
+        </div>
+
+        <button class="open-btn" id="openBtn">
+            CLICK ME 💗
+        </button>
+
+    </div>
+
+</section>
+
+<main id="main">
+
+    <section class="screen">
+
+        <div class="section fade">
+
+            <div class="kicker">
+                Sumona, one little question
+            </div>
+
+            <div class="question-card">
+
+                <h1>
+                   Do you love me? 💗
+                </h1>
+
+                <p>
+                    Some answers can only be given by the heart,<br>and I have waited a long time to ask.
+                </p>
+
+                <div class="question-actions">
+
+                    <button class="yes-btn" id="yesBtn">
+                        YES ❤️
+                    </button>
+
+                    <button class="no-btn" id="noBtn">
+                        NO 😏
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="celebrate">
+
+        <div class="section fade">
+
+            <div class="heart-burst">
+                💗
+            </div>
+
+            <h2 class="world-title">
+    Then this little world is yours, Sumona. 💗
+</h2>
+
+<div class="love-heart-pulse">
+    ❤️
+</div>
+
+<button class="love-open-btn" id="openLoveLetter">
+    ❤️
+    <span>OPEN MY LOVE</span>
+    💌
+</button>
+
+<div class="love-letter-card" id="loveLetterCard">
+
+    <h3>
+        Dear Sumona 💗
+    </h3>
+
+    <p>
+        Some feelings are hard to say aloud,<br>
+        but with you, they feel so easy. ❤️<br>
+        You are the softest part of my world,<br>
+        and I'm thankful for every moment. 🥰<br>
+        You mean more than words can say. 💗<br>
+        <i>— Rohan</i>
+    </p>
+
+</div>
+
+<div class="wanted-text" id="wantedText">
+    Sumona, there’s something I wanted to show you… ❤️
+</div>
+
+<button class="click-here-btn" id="photosBtn">
+    CLICK HERE 💗
+</button>
+
+        </div>
+
+    </section>
+
+  </main>
+
+<div id="photoGalleryPage">
+
+    <section class="content-section">
+
+        <div class="section fade">
+
+            <div class="kicker">
+                A little piece of Rohan
+            </div>
+
+            <h2>
+                Rohan, here for you. ❤️
+            </h2>
+
+            <div class="photo-card">
+
+                <img
+                    src="photos/img1.jpg"
+                    alt="A personal photo"
+                >
+
+            </div>
+
+          <button
+    type="button"
+    class="click-here-btn photo-next-btn"
+    id="firstPhotoNext">
+    NEXT 💗
+          </button>
+
+        </div>
+
+    </section>
+
+    <section class="content-section">
+
+        <div class="section fade">
+
+            <div class="kicker">
+                The most special one
+            </div>
+
+            <h2>
+                Your eyes, Sumona. 😍💝
+            </h2>
+
+            <div class="photo-card special-card">
+
+                <img
+                    src="photos/img2.jpg"
+                    alt="Special photo"
+                >
+
+            </div>
+
+          <button
+             type="button"
+             class="click-here-btn photo-next-btn"
+             id="secondPhotoNext">
+             NEXT 💗
+          </button>
+
+        </div>
+
+    </section>
+
+    <section class="content-section">
+
+        <div class="section fade">
+
+            <div class="kicker">
+                A few more of you
+            </div>
+
+            <h2>
+                Little memories of you 😍💗🦋
+            </h2>
+
+            <div class="gallery-wrap">
+
+                <div class="gallery" id="gallery">
+
+                    <div class="photo-card">
+                        <img
+                            src="photos/img3.jpg"
+                            alt="Photo 1"
+                        >
+                    </div>
+
+                    <div class="photo-card">
+                        <img
+                            src="photos/img4.jpg"
+                            alt="Photo 2"
+                        >
+                    </div>
+
+                    <div class="photo-card">
+                        <img
+                            src="photos/img5.jpg"
+                            alt="Photo 3"
+                        >
+                    </div>
+
+                    <div class="photo-card">
+                        <img
+                            src="photos/img6.jpg"
+                            alt="Photo 4"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="dots">
+
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="click-here-btn photo-next-btn"
+                id="surpriseBtn">
+                SURPRISE 💗
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+    <section class="final">
+
+        <div class="section fade">
+
+            <div class="final-heart">
+                ❤️
+            </div>
+
+            <h2>
+                And that's my little secret, Sumona.
+            </h2>
+
+            <p>I don't know exactly when you became my favourite part of every day, Sumona. I only know I would choose you again and again.</p>
+            <p>If you smiled even once while seeing this, then everything I made was worth it. 💗</p>
+            <p class="sign">— Rohan 💗</p>
+            <button type="button" class="click-here-btn" id="replyBtn">REPLY 💌</button>
+
+            <div
+                style="
+                margin-top:22px;
+                opacity:.6;
+                font-size:.8rem;
+                letter-spacing:2px;
+                "
+            >
+                MADE WITH LOVE · BY ROHAN
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+<audio id="music" preload="auto" loop>
+
+    <source src="photos/chahu me ana.mp3" type="audio/mpeg">
+</audio>
+      
+
+<div class="music-pill" id="musicPill">
+    ♫ playing
+</div>
+
+<script>
+
+const opening =
+document.getElementById("opening");
+
+const main =
+document.getElementById("main");
+
+const openBtn =
+document.getElementById("openBtn");
+
+ const pageTransition =
+document.getElementById("pageTransition"); 
+
+const music =
+document.getElementById("music");
+
+const musicPill =
+document.getElementById("musicPill");
+
+const celebrate =
+document.getElementById("celebrate");
+
+const yesBtn =
+document.getElementById("yesBtn");
+
+const noBtn =
+document.getElementById("noBtn");
+
+const FADE = 800;   // must equal the .page-transition duration (.8s)
+let busy = false;
+
+// One navigation system for every screen:
+// dark curtain fades in (.8s) -> screens swap -> curtain fades out (.8s)
+/** @param {() => void} swap */
+function goTo(swap){
+    if(busy) return;
+    busy = true;
+    pageTransition.classList.add("show");
+    setTimeout(() => {
+        swap();
+        setTimeout(() => {
+            pageTransition.classList.remove("show");
+            setTimeout(() => { busy = false; }, FADE);
+        }, 50);
+    }, FADE);
+}
+
+// ---- music: starts from 0:45 the moment CLICK ME is tapped ----
+const MUSIC_START = 43;
+let musicUrl = null, musicWanted = false;
+
+// load the song as a Blob so seeking works even if the server has no Range support
+fetch("photos/chahu me ana.mp3")
+    .then(r => r.ok ? r.blob() : Promise.reject())
+    .then(b => { musicUrl = URL.createObjectURL(b); })
+    .catch(() => {});
+
+music.addEventListener("playing", () => musicPill.classList.add("show"));
+
+function startMusic(){
+    if(musicUrl) music.src = musicUrl;
+    const seek = () => { try{ music.currentTime = MUSIC_START; }catch(e){} };
+    if(music.readyState >= 1 && !musicUrl) seek();
+    else music.addEventListener("loadedmetadata", seek, {once:true});
+    return Promise.resolve(music.play());
+}
+
+// if the browser blocked autoplay, the next tap silently retries (no visible button)
+document.addEventListener("pointerdown", () => {
+    if(musicWanted && music.paused) Promise.resolve(music.play()).catch(() => {});
+});
+
+openBtn.addEventListener("click", () => {
+    if(busy) return;
+    musicWanted = true;
+    startMusic().catch(() => {});
+    goTo(() => {
+        opening.style.display = "none";
+        main.style.display = "block";
+        window.scrollTo({top:0, behavior:"instant"});
+        burstHearts(14);
+    });
+});
+
+yesBtn.addEventListener("click", () => {
+    goTo(() => {
+        document.querySelector("#main > section.screen").style.display = "none";
+        celebrate.style.display = "flex";
+        window.scrollTo({top:0, behavior:"instant"});
+        burstHearts(30);
+    });
+});
+
+function moveNo(){
+
+    const card =
+        document.querySelector(".question-card");
+
+    const pad = 14;
+
+    const cardRect =
+        card.getBoundingClientRect();
+
+    const maxX =
+        cardRect.width -
+        noBtn.offsetWidth -
+        pad * 2;
+
+    const maxY =
+        cardRect.height -
+        noBtn.offsetHeight -
+        pad * 2;
+
+    noBtn.style.position =
+        "absolute";
+
+    noBtn.style.left =
+        (pad + Math.random() * Math.max(0, maxX)) + "px";
+
+    noBtn.style.top =
+        (pad + Math.random() * Math.max(0, maxY)) + "px";
+
+    noBtn.style.zIndex =
+        "50";
+}
+
+[
+    "mouseenter",
+    "pointerdown",
+    "touchstart"
+].forEach(
+    eventName => {
+
+        noBtn.addEventListener(
+            eventName,
+            event => {
+
+                if(
+                    eventName !==
+                    "mouseenter"
+                ){
+                    event.preventDefault();
+                }
+
+                moveNo();
+
+            },
+            {
+                passive:false
+            }
+        );
+
+    }
+);
+
+function burstHearts(count = 0){
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const heart =
+        document.createElement("div");
+
+        heart.className =
+        "floating-heart";
+
+        heart.textContent =
+        [
+            "💗",
+            "💕",
+            "💖",
+            "❤️",
+            "✨"
+        ][
+            Math.floor(
+                Math.random()*5
+            )
+        ];
+
+        heart.style.left =
+        (
+            10 +
+            Math.random()*80
+        ) + "%";
+
+        heart.style.setProperty(
+            "--x",
+            (
+                Math.random()*180-90
+            ) + "px"
+        );
+
+        heart.style.animationDelay =
+        (
+            Math.random()*.9
+        ) + "s";
+
+        document.body.appendChild(
+            heart
+        );
+
+        setTimeout(
+            () => heart.remove(),
+            5200
+        );
+    }
+}
+
+const gallery =
+document.getElementById("gallery");
+
+const dots =
+[
+    ...document.querySelectorAll(".dot")
+];
+
+gallery.addEventListener(
+    "scroll",
+    () => {
+
+        const index =
+        Math.round(
+            gallery.scrollLeft /
+            (gallery.clientWidth*.84)
+        );
+
+        dots.forEach(
+            (dot,i) => {
+
+                dot.classList.toggle(
+                    "active",
+                    i===index
+                );
+
+            }
+        );
+    }
+);
+
+  const openLoveLetter =
+document.getElementById("openLoveLetter");
+
+const loveLetterCard =
+document.getElementById("loveLetterCard");
+
+const wantedText =
+document.getElementById("wantedText");
+
+const photosBtn =
+document.getElementById("photosBtn");
+
+
+openLoveLetter.addEventListener("click", () => {
+    loveLetterCard.classList.add("open");
+    wantedText.style.visibility = "visible";
+    photosBtn.style.visibility = "visible";
+});
+
+
+// ---- photo experience + final ----
+const photoGalleryPage = document.getElementById("photoGalleryPage");
+const photoSections = photoGalleryPage.querySelectorAll(".content-section");
+const finalSection = document.querySelector(".final");
+
+/** @param {number} i */
+function showPhotoSection(i){
+    photoSections.forEach((s, k) => s.classList.toggle("photo-section-active", k === i));
+    photoSections[i].scrollTop = 0;
+}
+
+photosBtn.addEventListener("click", () => {
+    goTo(() => {
+        document.documentElement.classList.add("scroll-locked");
+        photoGalleryPage.classList.add("photo-page-active");
+        showPhotoSection(0);
+    });
+});
+
+[["firstPhotoNext", 1], ["secondPhotoNext", 2]].forEach(([id, i]) => {
+    document.getElementById(id).addEventListener("click", () => goTo(() => showPhotoSection(i)));
+});
+
+// ---- REPLY button (final screen) ----
+// Put Rohan's WhatsApp number here, digits only with country code, e.g. "8801XXXXXXXXX".
+const REPLY_NUMBER = "918328759350";
+const REPLY_TEXT = "Rohan, I saw everything 💗 and my answer is YES ❤️ or I Love You Sonai💝💗";
+const replyBtn = document.getElementById("replyBtn");
+if(!REPLY_NUMBER) replyBtn.style.display = "none";
+else replyBtn.addEventListener("click", () => {
+    window.location.href = "https://wa.me/" + REPLY_NUMBER + "?text=" + encodeURIComponent(REPLY_TEXT);
+});
+
+document.getElementById("surpriseBtn").addEventListener("click", () => {
+    goTo(() => {
+        photoGalleryPage.classList.remove("photo-page-active");
+        finalSection.classList.add("final-active");
+    });
+});
+
+</script>
+
+</body>
+</html>
